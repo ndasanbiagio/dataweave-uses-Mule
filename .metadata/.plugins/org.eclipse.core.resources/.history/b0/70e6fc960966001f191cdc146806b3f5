@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="dwFlow" doc:id="bacdb364-b931-4f6f-8ffa-3c5f1b61342a" >
+		<ee:transform doc:name="countBy" doc:id="aab5bd24-379b-4564-aba8-6e0ace57f993" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Arrays
+output application/json
+---
+{
+	"countBy": [1,2,3,4,5,6] countBy (($ mod 2) == 0)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="divideBy" doc:id="e161c3c2-2630-4490-a4f4-cce7176b8a4a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Arrays
+output application/json
+---
+{
+	"divideBy": [1,2,3,4,5,6] divideBy  2,
+	"divideBy3": [1,2,3,4,5,6] divideBy 3,
+	"divideBy4": [1,2,3,4,5,6] divideBy 4
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="indexOf" doc:id="b8b8c9e8-9e29-4946-95b9-b78499418fd6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Arrays
+output application/json
+
+var username = ["user1","user2","user3"]
+---
+indexOf(username, "user2")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="slice" doc:id="e10ec475-f31a-43f4-97bc-6efdbde95043" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Arrays
+output application/json
+
+var slicehead = [1,2,3,4,5,6]
+---
+slice(slicehead,1,4)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="sumBy" doc:id="d5098cf6-8b33-48d4-a359-7533fa6765ed" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Arrays
+output application/json
+
+---
+{
+	"sumby": [
+		{
+			"k1": 10
+		},
+		{
+			"k1": 20
+		},
+		{
+			"k1": 30
+		}
+	] sumBy $.k1
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="capitalize" doc:id="9e7056fc-e706-45a1-8d55-7016c4bb061e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Strings
+output application/json
+---
+{
+	"camelize": camelize("_mulesoft"),
+	"capitalize": capitalize("salesforce mulesoft"),
+	"upper": upper("hi"),
+	"lower": lower("MULESOFT"),
+	"isuppercase": isUpperCase("HI"),
+	"isLowerCase": isLowerCase("hi"),
+	
+	"replaceAll": replaceAll("nico mule", "soft", "sales"),
+	"substring": substring("mulesoft",0,4),
+	
+	"singularize": singularize("mules"),
+	"pluralize": pluralize("snake"),
+	
+	"wrapswith": wrapWith("MulE", "***")
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dwFlow1" doc:id="3a31e819-6c08-471d-b741-35c9f0ceb335" >
+		<ee:transform doc:name="++--" doc:id="9052156c-db13-4a21-af09-629e38dde8ca" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"conNumbers": [1,2,3,] ++ [4,5,6] ++ ["a"],
+	"UnconNumbers": [1,2,3]  -- [1],
+	"payload1": "Hi" ++ " " ++ "Mule" ++ "!!!"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Average" doc:id="0e958c96-c08a-492c-9009-bf818547a977" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"avg1": avg([1,1000]),
+	"avg2": avg([1,1000,5687])
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="distinctBy" doc:id="4497b4f8-e874-4f87-ad3b-baccc3273f67" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[0,1,2,3,4,5,6,7,8,9,6,12,13,12,18,14] distinctBy (arrayValue) -> {
+	"removeDuplicateElements": arrayValue
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="endsWith" doc:id="491b5a9f-0d29-459d-9924-6c246bca3910" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+["mulesoft" endsWith "ft"]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="find" doc:id="292be836-1c4f-4731-8ed3-336b18de5e4c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+["a","b", "c"] find ("b")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dwFlow2" doc:id="8317fa3e-4b47-455d-9e63-9dbcd5100530" >
+		<ee:transform doc:name="indexOf" doc:id="d83aef85-e562-4fb0-acad-5e8845bb37b2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"key1": ["a","b","c","d"] indexOf "a",
+	"key2": "mulesoft" indexOf "e"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="isUsage" doc:id="9d709583-ea7b-482c-9d62-761de16ca3c9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"insblanks": {
+		"isBlank1": isBlank(""),
+		"isBlank2": isBlank("Mule"),
+		"isBlank3": isBlank(null),
+			},
+	
+	"isdecimals":{
+		"isdecimal1": isDecimal(1.2),
+		"isdecimal2": isDecimal(1)
+	},
+	"isEmpty": {
+		"isEmpty1": isEmpty([]),
+		"isEmpty2": isEmpty({}),
+		"isEmpty3": isEmpty(null),
+		"isEmpty3": isEmpty(""),
+		"isEmpty3": isEmpty("1"),
+		"isEmpty3": isEmpty("Mule")
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="minAndMax" doc:id="eb6fefea-6fba-438d-a4a3-2affc0b71712" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="tempjson" format="json">
+      <types:shape format="weave" example="examples/lambdaExpression.json"><![CDATA[%dw 2.0
+
+type tempjson = {|
+  field1: String, 
+  field2: String, 
+  field3: String
+|} {"example": "{\\\"field1\\\":\\\"Mule\\\",\\\"field2\\\":\\\"Soft\\\",\\\"field3\\\":\\\"SalesForces\\\"}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#d8eaf87e-2d62-4138-ae47-e7a3ac1248e5">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="tempjson"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

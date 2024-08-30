@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="lambdaExpressionFlow" doc:id="f2a22f49-4ccf-451a-964c-8b93dfa6ca87" >
+		<ee:transform doc:name="firstExpression" doc:id="d8eaf87e-2d62-4138-ae47-e7a3ac1248e5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+//after - lambda
+var loadEmpDetails = (value) -> {
+	"firstName": payload.field1,
+	"lastName": payload.field2,
+	"enterpriseName": payload.field3
+}
+
+//Before
+//fun loadEmpDetails(value) = {
+//	"firstName": payload.field1,
+//	"lastName": payload.field2,
+//	"enterpriseName": payload.field3
+//}
+---
+loadEmpDetails(payload)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="lambdaOnArray" doc:id="f22bae3d-8153-4e92-8c48-540b6a62a92f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var employeeNames= [
+	"Mule",
+	"Soft",
+	"SalesForces"
+]
+---
+{
+	EmployeeName: employeeNames map((argument1)-> upper(argument1)),
+	EmployeeName: employeeNames map((argument1)-> lower(argument1))
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="basicExample" doc:id="6560acc0-af31-4c96-bb59-3e2ee23a7458" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"key1": (()-> 2+3)() as String,
+	"key2": (()-> 2+3)() as Number
+}
+//fun  funname(a1,a2)->{
+//	
+//}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="implementFilterLambda" doc:id="369785c7-4134-49a1-889b-a26f0e96bd0b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var numbers = (1 to 10)
+---
+//filter(numbers, (item, index) -> (item/2) == 1)
+
+//numbers filter((item, index) -> (item/5)==1 )
+
+numbers filter((item, index) -> (item) > 4)
+		filter((item, index) -> (item) < 7)
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
